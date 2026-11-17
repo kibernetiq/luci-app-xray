@@ -13,7 +13,9 @@ env:
 jobs:
   release:
     name: Build for ${{ matrix.arch }} (${{ matrix.id }})
-    runs-on: ubuntu-latest
+    # ubuntu-latest теперь 26.04 с uutils coreutils (Rust), а OpenWrt SDK
+    # требует GNU 'install'. Закрепляем 24.04, где coreutils — GNU.
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -34,7 +36,7 @@ jobs:
       CONFIG_CCACHE: y
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Prepare Cache Key
         id: cache_key
